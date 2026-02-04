@@ -44,18 +44,40 @@ body {
         top: 0;
         left: 0;
         width: 100%;
-        aspect-ratio: 3/2;
-        max-height: 100vh;
+        aspect-ratio: 8/5;
+        // max-height: 100vh;
 
         background-color: var(--sky-color);
-        background-image: var(--sky-image);
-        background-repeat: no-repeat;
-        background-position: top center;
-        background-size: cover;
-        background-blend-mode: overlay;
+        background-image:
+            // ligne 1
+            var(--circle-1),
+            var(--circle-2),
+            var(--circle-1),
 
-        -webkit-mask-image: linear-gradient(to bottom, black, transparent);
-         mask-image: linear-gradient(to bottom, black, transparent);
+            // ligne 2
+            var(--circle-1),
+        ;
+        background-size:
+            12.5% 20%
+        ;
+        background-position:
+            // ligne 1 
+            0% 0%,
+            calc((1 * 12.5%) / (100% - 12.5%) * 100%) 0%,
+            calc((6 * 12.5%) / (100% - 12.5%) * 100%) 0%,
+            
+            // ligne 2
+            0% calc((1 * 20%) / (100% - 20%) * 100%),
+
+            ;
+        ;
+        background-repeat: no-repeat;
+        // background-position: top center;
+        // background-size: cover;
+        // background-blend-mode: overlay;
+
+        // -webkit-mask-image: linear-gradient(to bottom, black, transparent);
+        //  mask-image: linear-gradient(to bottom, black, transparent);
         transition: background-color var(--scheme-transition-duration);
 
          z-index: -1;
