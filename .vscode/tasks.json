@@ -1,0 +1,27 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "acqc:buildjs",
+			"type": "npm",
+			"script": "buildjs",
+			"presentation": {
+				"panel": "shared",
+				"group": "acqc",
+				"reveal": "never",
+				"showReuseMessage": false
+			},
+		},
+		{
+			"label": "acqc:buildcss",
+			"type": "npm",
+			"script": "buildcss",
+			"presentation": {
+				"panel": "shared",
+				"group": "acqc",
+				"reveal": "never",
+				"showReuseMessage": false
+			}
+		}
+	]
+}
