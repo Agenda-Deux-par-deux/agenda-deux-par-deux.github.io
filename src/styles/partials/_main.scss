@@ -27,11 +27,15 @@ html {
 
 
 body {
+    position: relative;
     color: var(--fg);
     background-color: var(--bg);
     overflow-x: hidden;
+    // overflow: hidden;
 
-    transition: background-color var(--scheme-transition-duration);
+    transition:
+        background-color var(--scheme-transition-duration),
+        color var(--scheme-transition-duration);
 
     display: flex;
     flex-direction: column;
@@ -39,48 +43,105 @@ body {
     min-height: 100dvh;
 
     &::before {
+        $aspect-width: 8;
+        $aspect-height: 10;
+        $fade-lines: 4;
+        
+        --offset-width: #{calc(100% / $aspect-width)};
+        --offset-height: #{calc(100% / $aspect-height)};
+        --denom-width: calc(var(--offset-width) / (100% - var(--offset-width)) * 100%);
+        --denom-height: calc(var(--offset-height) / (100% - var(--offset-height)) * 100%);
+        --mask: linear-gradient(to bottom, black 0, black calc(100% - calc(var(--denom-height) * #{$fade-lines})), transparent 100%);
+
         content: '';
         position: absolute;
         top: 0;
         left: 0;
+        // inset: 0;
         width: 100%;
-        aspect-ratio: 8/5;
-        // max-height: 100vh;
+        aspect-ratio: #{$aspect-width}/#{$aspect-height};
+        transition: background-image var(--scheme-transition-duration);
+        -webkit-mask-image: var(--mask);
+        mask-image: var(--mask);
+        z-index: -1;
 
-        background-color: var(--sky-color);
+        background-repeat: no-repeat;
+        // background-color: var(--sky-color);
+        background-size: var(--offset-width) var(--offset-height);
         background-image:
-            // ligne 1
-            var(--circle-1),
-            var(--circle-2),
-            var(--circle-1),
-
-            // ligne 2
-            var(--circle-1),
-        ;
-        background-size:
-            12.5% 20%
-        ;
+            var(--circle-1), var(--circle-2), var(--circle-1),
+            var(--circle-1), var(--circle-2), var(--circle-1), var(--circle-2), var(--circle-2),
+            var(--circle-1), var(--circle-2), var(--circle-2), var(--circle-1),
+            var(--circle-2), var(--circle-1), var(--circle-1), var(--circle-1), var(--circle-1),
+            var(--circle-1), var(--circle-2), var(--circle-2), var(--circle-1),
+            var(--circle-2), var(--circle-2), var(--circle-1), var(--circle-1), var(--circle-2),
+            var(--circle-1), var(--circle-2), var(--circle-1),
+            var(--circle-2), var(--circle-1), var(--circle-2), var(--circle-2),
+            var(--circle-2), var(--circle-1), var(--circle-2),
+            var(--circle-1), var(--circle-1), var(--circle-2), var(--circle-1), var(--circle-1), var(--circle-2);
+        
         background-position:
             // ligne 1 
             0% 0%,
-            calc((1 * 12.5%) / (100% - 12.5%) * 100%) 0%,
-            calc((6 * 12.5%) / (100% - 12.5%) * 100%) 0%,
+            calc(1 * var(--denom-width)) 0%,
+            calc(6 * var(--denom-width)) 0%,
             
             // ligne 2
-            0% calc((1 * 20%) / (100% - 20%) * 100%),
+            0% calc(1 * var(--denom-height)),
+            calc(2 * var(--denom-width)) calc(1 * var(--denom-height)),
+            calc(4 * var(--denom-width)) calc(1 * var(--denom-height)),
+            calc(6 * var(--denom-width)) calc(1 * var(--denom-height)),
+            calc(7 * var(--denom-width)) calc(1 * var(--denom-height)),
 
-            ;
-        ;
-        background-repeat: no-repeat;
-        // background-position: top center;
-        // background-size: cover;
-        // background-blend-mode: overlay;
+            // ligne 3
+            calc(1 * var(--denom-width)) calc(2 * var(--denom-height)),
+            calc(2 * var(--denom-width)) calc(2 * var(--denom-height)),
+            calc(5 * var(--denom-width)) calc(2 * var(--denom-height)),
+            calc(6 * var(--denom-width)) calc(2 * var(--denom-height)),
 
-        // -webkit-mask-image: linear-gradient(to bottom, black, transparent);
-        //  mask-image: linear-gradient(to bottom, black, transparent);
-        transition: background-color var(--scheme-transition-duration);
+            // ligne 4
+            0% calc(3 * var(--denom-height)),
+            calc(1 * var(--denom-width)) calc(3 * var(--denom-height)),
+            calc(3 * var(--denom-width)) calc(3 * var(--denom-height)),
+            calc(5 * var(--denom-width)) calc(3 * var(--denom-height)),
+            calc(7 * var(--denom-width)) calc(3 * var(--denom-height)),
 
-         z-index: -1;
+            // ligne 5
+            0% calc(4 * var(--denom-height)),
+            calc(3 * var(--denom-width)) calc(4 * var(--denom-height)),
+            calc(5 * var(--denom-width)) calc(4 * var(--denom-height)),
+            calc(7 * var(--denom-width)) calc(4 * var(--denom-height)),
+
+            // ligne 6
+            0% calc(5 * var(--denom-height)),
+            calc(1 * var(--denom-width)) calc(5 * var(--denom-height)),
+            calc(2 * var(--denom-width)) calc(5 * var(--denom-height)),
+            calc(3 * var(--denom-width)) calc(5 * var(--denom-height)),
+            calc(6 * var(--denom-width)) calc(5 * var(--denom-height)),
+
+            // ligne 7
+            calc(1 * var(--denom-width)) calc(6 * var(--denom-height)),
+            calc(3 * var(--denom-width)) calc(6 * var(--denom-height)),
+            calc(5 * var(--denom-width)) calc(6 * var(--denom-height)),
+
+            // ligne 8
+            0% calc(7 * var(--denom-height)),
+            calc(2 * var(--denom-width)) calc(7 * var(--denom-height)),
+            calc(4 * var(--denom-width)) calc(7 * var(--denom-height)),
+            calc(7 * var(--denom-width)) calc(7 * var(--denom-height)),
+
+            // ligne 9
+            calc(2 * var(--denom-width)) calc(8 * var(--denom-height)),
+            calc(5 * var(--denom-width)) calc(8 * var(--denom-height)),
+            calc(6 * var(--denom-width)) calc(8 * var(--denom-height)),
+
+            // ligne 10
+            0% calc(9 * var(--denom-height)),
+            calc(1 * var(--denom-width)) calc(9 * var(--denom-height)),
+            calc(3 * var(--denom-width)) calc(9 * var(--denom-height)),
+            calc(4 * var(--denom-width)) calc(9 * var(--denom-height)),
+            calc(6 * var(--denom-width)) calc(9 * var(--denom-height)),
+            calc(7 * var(--denom-width)) calc(9 * var(--denom-height));
     }
 
 }
@@ -113,17 +174,7 @@ header {
         flex-direction: row;
         justify-content: center;
         user-select: none;
-
-        &::before {
-            content: '';
-            width: 11rem;
-            aspect-ratio: 1/1;
-            background-image: var(--logo);
-            background-position: center center;
-            background-repeat: no-repeat;
-            background-size: contain;
-            flex-shrink: 0;
-        }
+        transition: color var(--scheme-transition-duration);
 
         & > :first-child {
             display: flex;
@@ -134,13 +185,18 @@ header {
 
             & > :first-child {
                 font-size: 6.1rem;
-                font-weight: 800;
+                // font-weight: 800;
+                text-align: center;
+                // background-color: red;
+                margin-bottom: 2rem;
             }
 
             & > :last-child {
                 margin-top: -1.5rem;
                 font-size: 3.4rem;
-                font-weight: 300;
+                // font-weight: 300;
+                text-align: center;
+                
             }
         }
 
@@ -158,25 +214,29 @@ main {
 
 
 footer {
+    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 1.7rem;
+    font-size: 1.5rem;
     font-weight: 400;
     height: 12rem;
     margin-bottom: 2rem;
-    opacity: 0.4;
+    // opacity: 0.4;
     user-select: none;
 
     &::before {
         content: '';
-        width: 1.7em;
-        aspect-ratio: 43/75;
-        background-image: var(--ssjb);
+        // width: 1.7em;
+        height: 2em;
+        aspect-ratio: 2/1;
+        // background-color: red;
+        background-image: var(--logo);
         background-size: contain;
         background-position: left center;
         background-repeat: no-repeat;
         margin-right: 0.5em;
+        transition: background-image var(--scheme-transition-duration);
     }
 }
 
@@ -186,8 +246,18 @@ section {
     max-width: var(--font-size-break);
     padding: 2rem;
     margin-bottom: 2rem;
+    // background-color: red;
 
     &:not(.calendar) > div {
+        &::before {
+            content: "";
+            inset: 0;
+            position: absolute;
+            background-color: var(--bg-modal);
+            z-index: -1;
+            opacity: 0.7;
+            transition: background-color var(--scheme-transition-duration);
+        }
         position: relative;
 		-webkit-box-shadow: var(--shadow);
 		box-shadow: var(--shadow);
@@ -202,6 +272,14 @@ section {
         h2 {
             font-size: 1.4em;
             font-weight: 800;
+            width: fit-content;
+            margin-inline: auto;
+            margin-bottom: 1em;
+            padding: 0.5em 2em;
+            border-radius: 1.9em;
+            background-color: var(--accent);
+            color: var(--accent-contrast);
+
         }
 
         h3 {
@@ -226,7 +304,14 @@ section {
     }
 
     &.upcoming {
-        h2 > div {
+        // position: relative;
+        .pagination {
+            position: absolute;
+            // font-size: 1.4em;
+            top: 2em;
+            right: 2em;
+            // transform: translate(-50%, -50%);
+            // background-color: red;
             float: right;
             user-select: none;
 
@@ -237,13 +322,15 @@ section {
             > div {
                 vertical-align: middle;
                 display: inline-block;
-                width: 1em;
+                width: 2.2rem;
                 aspect-ratio: 1/1;
                 background-position: center;
                 background-repeat: no-repeat;
                 background-size: contain;
                 cursor: pointer;
-                transition: transform 100ms;
+                transition:
+                    transform 100ms,
+                    background-image var(--scheme-transition-duration);
 
                 &:not(.swiper-button-disabled):hover {
                     transform: scaleX(var(--scale-x)) scaleY(1.2);

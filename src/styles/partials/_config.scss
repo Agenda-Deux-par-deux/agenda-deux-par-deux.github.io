@@ -1,4 +1,5 @@
-$font-family: "Nunito Sans";
+// $font-family: "Nunito Sans";
+$font-family: "Messina";
 $font-base:   18;
 $font-break:  1024;
 $font-resp:   calc($font-base * 100 / $font-break);
@@ -20,7 +21,7 @@ $modal-resp:  calc($font-base * 100 / $modal-break);
     --modal-resp:      #{$modal-resp}vw;
     --modal-size:      min(var(--modal-resp), var(--font-size-base));
 
-    --scheme-transition-duration: 400ms;
+    --scheme-transition-duration: 250ms;
 
     --text-stroke: 0.1rem 0 var(--bg), -0.1rem 0 var(--bg), 0 0.1rem var(--bg),  0 -0.1rem var(--bg), 0.1rem 0.1rem var(--bg),  0.1rem -0.1rem var(--bg), -0.1rem 0.1rem var(--bg), -0.1rem -0.1rem var(--bg);
 

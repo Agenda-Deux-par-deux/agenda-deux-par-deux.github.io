@@ -1,13 +1,27 @@
 .calendar {
 	user-select: none;
 
+
+
 	& > div {
+		position: relative;
 		-webkit-box-shadow: var(--shadow);
 		box-shadow: var(--shadow);
+
+        &::before {
+            content: "";
+            inset: 0;
+            position: absolute;
+            background-color: var(--bg-modal);
+            z-index: -1;
+            opacity: 0.7;
+            transition: background-color var(--scheme-transition-duration);
+        }
 	}
 
 	&__types {
 		background-color: var(--bg-alpha);
+		// transition: background-image var(--scheme-transition-duration);
 		display: flex;
 		flex-direction: row;
 		justify-content: space-between;
@@ -54,7 +68,8 @@
 
 
 	&__pagination {
-		background-color: var(--bg-alpha);
+		// background-color: var(--bg-alpha);
+		// transition: background-color var(--scheme-transition-duration);
 		display: flex;
 		flex-direction: row;
 		justify-content: space-between;
@@ -106,6 +121,7 @@
 					background-position: center;
 					margin-right: 1rem;
 					transform: scaleX(-1);
+					transition: background-image var(--scheme-transition-duration);
 				}
 			}
 		}
@@ -141,6 +157,7 @@
 					background-size: contain;
 					background-position: center;
 					margin-left: 1rem;
+					transition: background-image var(--scheme-transition-duration);
 				}
 			}
 		}

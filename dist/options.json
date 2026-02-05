@@ -1,0 +1,43 @@
+{
+	"organisations": [
+		{
+			"slug": "ssjb",
+			"name": "SSJB",
+			"url": "https://ssjb.com"
+		},
+		{
+			"slug": "mds",
+			"name": "MDS",
+			"url": "https://www.ledevoir.com/politique/quebec/122742/le-mouvement-democratie-souverainete-est-lance"
+		},
+		{
+			"slug": "mei",
+			"name": "MÉI",
+			"url": "https://mei.quebec"
+		},
+		{
+			"slug": "ouiqc",
+			"name": "OUI Québec",
+			"url": "https://www.ouiquebec.org"
+		},
+		{
+			"slug": "qs",
+			"name": "Québec Solidaire",
+			"url": "https://quebecsolidaire.net"
+		}
+	],
+	"types": [
+		{
+			"slug": "citoyen",
+			"name": "Citoyen"
+		},
+		{
+			"slug": "etudiant",
+			"name": "Étudiant"
+		},
+		{
+			"slug": "politique",
+			"name": "Politique"
+		}
+	]
+}
