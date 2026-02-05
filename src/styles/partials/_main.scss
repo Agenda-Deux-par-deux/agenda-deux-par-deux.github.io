@@ -46,11 +46,16 @@ body {
         $aspect-width: 8;
         $aspect-height: 10;
         $fade-lines: 4;
+
+        $offset-width: calc(100% / $aspect-width);
+        $offset-height: calc(100% / $aspect-height);
+        $denom-width: calc($offset-width / (100% - $offset-width) * 100%);
+        $denom-height: calc($offset-height / (100% - $offset-height) * 100%);
         
-        --offset-width: #{calc(100% / $aspect-width)};
-        --offset-height: #{calc(100% / $aspect-height)};
-        --denom-width: calc(var(--offset-width) / (100% - var(--offset-width)) * 100%);
-        --denom-height: calc(var(--offset-height) / (100% - var(--offset-height)) * 100%);
+        --offset-width: #{$offset-width};
+        --offset-height: #{$offset-height};
+        --denom-width: #{$denom-width};
+        --denom-height: #{$denom-height};
         --mask: linear-gradient(to bottom, black 0, black calc(100% - calc(var(--denom-height) * #{$fade-lines})), transparent 100%);
 
         content: '';
@@ -64,7 +69,8 @@ body {
         -webkit-mask-image: var(--mask);
         mask-image: var(--mask);
         z-index: -1;
-
+        // background-color: red;
+        // back
         background-repeat: no-repeat;
         // background-color: var(--sky-color);
         background-size: var(--offset-width) var(--offset-height);
@@ -175,6 +181,7 @@ header {
         justify-content: center;
         user-select: none;
         transition: color var(--scheme-transition-duration);
+        // font-weight: normal;
 
         & > :first-child {
             display: flex;
