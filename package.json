@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "chokidar-cli": "^3.0.0",
     "csso": "^5.0.5",
     "esbuild": "^0.27.2",
     "ignore": "^7.0.5",
@@ -10,6 +11,8 @@
     "export": "node scripts/export.js",
     "buildjs": "node scripts/buildjs.js",
     "buildcss": "node scripts/buildcss.js",
-    "postinstall": "node scripts/postinstall.js"
+    "postinstall": "node scripts/postinstall.js",
+    "watchjs": "chokidar \"src/scripts/**/*.js\" -i \"**/*.min.js\" -i \"**/node_modules/**\" -i \"**/dist/**\" --debounce 200 -c \"npm run buildjs\"",
+    "watchscss": "chokidar \"src/styles/**/*.scss\" -i \"**/node_modules/**\" -i \"**/dist/**\" --debounce 200 -c \"npm run buildcss\""
   }
 }
