@@ -218,25 +218,41 @@ footer {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     font-weight: 400;
     height: 12rem;
     margin-bottom: 2rem;
     // opacity: 0.4;
     user-select: none;
 
+    // &::before {
+    //     content: '';
+    //     // width: 1.7em;
+    //     height: 2em;
+    //     aspect-ratio: 2/1;
+    //     // background-color: red;
+    //     background-image: var(--logo);
+    //     background-size: contain;
+    //     background-position: left center;
+    //     background-repeat: no-repeat;
+    //     margin-right: 0.5em;
+    //     transition: background-image var(--scheme-transition-duration);
+    // }
+
+
     &::before {
         content: '';
         // width: 1.7em;
         height: 2em;
-        aspect-ratio: 2/1;
+        aspect-ratio: 1/1;
         // background-color: red;
-        background-image: var(--logo);
+        background-image: url(../images/flf-logo.webp);
         background-size: contain;
         background-position: left center;
         background-repeat: no-repeat;
-        margin-right: 0.5em;
+        // margin-right: 0.5em;
         transition: background-image var(--scheme-transition-duration);
+        filter: brightness(var(--logo-brightness));
     }
 }
 
