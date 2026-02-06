@@ -13,7 +13,7 @@
 			"presentation": {
 				"panel": "shared",
 				"group": "build-watch",
-				"reveal": "never",
+				"reveal": "always",
 				"showReuseMessage": false
 			},
 			"problemMatcher": []
