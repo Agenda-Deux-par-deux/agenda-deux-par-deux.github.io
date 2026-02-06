@@ -12,7 +12,7 @@ const { close } = createWatchers(
 				console.log("[js] batch", events.length, events.map(e => e.file));
 				const entry = path.resolve(__dirname, "../src/scripts/agenda.core.js");
 				const outfile = path.resolve(__dirname, "../src/scripts/agenda.core.min.js");
-				buildJS(entry, outfile);
+				await buildJS(entry, outfile);
 			},
 		},
 		{
@@ -23,7 +23,7 @@ const { close } = createWatchers(
 				console.log("[scss] batch", events.length, events.map(e => e.file));
 				const inputScss = path.resolve(__dirname, "../src/styles/agenda.core.scss");
 				const outCssMin = path.resolve(__dirname, "../src/styles/agenda.core.min.css");
-				buildCSS(inputScss, outCssMin);
+				await buildCSS(inputScss, outCssMin);
 			},
 		},
 	],
