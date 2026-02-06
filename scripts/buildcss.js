@@ -3,8 +3,8 @@ const path = require("node:path");
 const sass = require("sass");
 const csso = require("csso");
 
-const inputScss = path.resolve(__dirname, "../src/styles/action.quebec.core.scss");
-const outCssMin = path.resolve(__dirname, "../src/styles/action.quebec.core.min.css");
+const inputScss = path.resolve(__dirname, "../src/styles/agenda.core.scss");
+const outCssMin = path.resolve(__dirname, "../src/styles/agenda.core.min.css");
 
 let compiled;
 try {

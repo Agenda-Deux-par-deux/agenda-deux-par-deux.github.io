@@ -33,7 +33,8 @@ $dark-circle-2:         #4c5e53;
 
 
 // ===>>> Light theme generated colors
-$light-bg-part: color.adjust($light-sky-color, $lightness: -1%);
+// $light-bg-part: color.adjust($light-sky-color, $lightness: -1%);
+$light-bg-part: $light-accent;
 $light-bg-alpha: color.adjust($light-bg, $alpha: -0.7);
 $light-fg-alpha: color.adjust($light-fg, $alpha: -0.7);
 $light-bg-link-alpha: color.adjust($light-bg-link, $alpha: -0.6);
@@ -51,7 +52,8 @@ $light-circle-2-hex: string.unquote('#{string.slice(ie-hex-str($light-circle-2),
 
 
 // ===>>> Dark theme generated colors
-$dark-bg-part:   color.adjust($dark-bg, $lightness: 6%);
+// $dark-bg-part:   color.adjust($dark-bg, $lightness: 6%);
+$dark-bg-part: #393839;
 $dark-bg-alpha:  color.adjust($dark-bg, $alpha: -0.7);
 $dark-fg-alpha:  color.adjust($dark-fg, $alpha: -0.7);
 $dark-bg-link-alpha: color.adjust($dark-bg-link, $alpha: -0.6);

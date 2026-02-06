@@ -75,6 +75,8 @@
 		justify-content: space-between;
 		height: 5rem;
 
+		border-bottom: 0.1rem solid var(--cal-border);
+
 		& > * {
 			flex: 1 1 0;
 			min-width: 0;

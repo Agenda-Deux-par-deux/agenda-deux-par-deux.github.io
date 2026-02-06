@@ -1,8 +1,8 @@
 const path = require("node:path");
 const esbuild = require("esbuild");
 
-const entry = path.resolve(__dirname, "../src/scripts/action.quebec.core.js");
-const outfile = path.resolve(__dirname, "../src/scripts/action.quebec.core.min.js");
+const entry = path.resolve(__dirname, "../src/scripts/agenda.core.js");
+const outfile = path.resolve(__dirname, "../src/scripts/agenda.core.min.js");
 
 (async () => {
 	try {
