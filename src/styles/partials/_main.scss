@@ -31,16 +31,14 @@ body {
     color: var(--fg);
     background-color: var(--bg);
     overflow-x: hidden;
-    // overflow: hidden;
-
-    transition:
-        background-color var(--scheme-transition-duration),
-        color var(--scheme-transition-duration);
-
     display: flex;
     flex-direction: column;
     min-height: 100dvh;
     min-height: 100dvh;
+
+    transition:
+        background-color var(--scheme-transition-duration),
+        color var(--scheme-transition-duration);
 
     &::before {
         $aspect-width: 8;
@@ -51,12 +49,8 @@ body {
         $offset-height: calc(100% / $aspect-height);
         $denom-width: calc($offset-width / (100% - $offset-width) * 100%);
         $denom-height: calc($offset-height / (100% - $offset-height) * 100%);
-        
-        --offset-width: #{$offset-width};
-        --offset-height: #{$offset-height};
-        --denom-width: #{$denom-width};
-        --denom-height: #{$denom-height};
-        --mask: linear-gradient(to bottom, black 0, black calc(100% - calc(var(--denom-height) * #{$fade-lines})), transparent 100%);
+        $mask-fade: calc(100% - ($denom-height * $fade-lines));
+        --mask: linear-gradient(to bottom, black 0, black #{$mask-fade}, transparent 100%);
 
         content: '';
         position: absolute;
@@ -73,7 +67,7 @@ body {
         // back
         background-repeat: no-repeat;
         // background-color: var(--sky-color);
-        background-size: var(--offset-width) var(--offset-height);
+        background-size: #{$offset-width} #{$offset-height};
         background-image:
             var(--circle-1), var(--circle-2), var(--circle-1),
             var(--circle-1), var(--circle-2), var(--circle-1), var(--circle-2), var(--circle-2),
@@ -89,65 +83,65 @@ body {
         background-position:
             // ligne 1 
             0% 0%,
-            calc(1 * var(--denom-width)) 0%,
-            calc(6 * var(--denom-width)) 0%,
+            #{calc(1 * $denom-width)} 0%,
+            #{calc(6 * $denom-width)} 0%,
             
             // ligne 2
-            0% calc(1 * var(--denom-height)),
-            calc(2 * var(--denom-width)) calc(1 * var(--denom-height)),
-            calc(4 * var(--denom-width)) calc(1 * var(--denom-height)),
-            calc(6 * var(--denom-width)) calc(1 * var(--denom-height)),
-            calc(7 * var(--denom-width)) calc(1 * var(--denom-height)),
+            0% #{calc(1 * $denom-height)},
+            #{calc(2 * $denom-width)} #{calc(1 * $denom-height)},
+            #{calc(4 * $denom-width)} #{calc(1 * $denom-height)},
+            #{calc(6 * $denom-width)} #{calc(1 * $denom-height)},
+            #{calc(7 * $denom-width)} #{calc(1 * $denom-height)},
 
             // ligne 3
-            calc(1 * var(--denom-width)) calc(2 * var(--denom-height)),
-            calc(2 * var(--denom-width)) calc(2 * var(--denom-height)),
-            calc(5 * var(--denom-width)) calc(2 * var(--denom-height)),
-            calc(6 * var(--denom-width)) calc(2 * var(--denom-height)),
+            #{calc(1 * $denom-width)} #{calc(2 * $denom-height)},
+            #{calc(2 * $denom-width)} #{calc(2 * $denom-height)},
+            #{calc(5 * $denom-width)} #{calc(2 * $denom-height)},
+            #{calc(6 * $denom-width)} #{calc(2 * $denom-height)},
 
             // ligne 4
-            0% calc(3 * var(--denom-height)),
-            calc(1 * var(--denom-width)) calc(3 * var(--denom-height)),
-            calc(3 * var(--denom-width)) calc(3 * var(--denom-height)),
-            calc(5 * var(--denom-width)) calc(3 * var(--denom-height)),
-            calc(7 * var(--denom-width)) calc(3 * var(--denom-height)),
+            0% #{calc(3 * $denom-height)},
+            #{calc(1 * $denom-width)} #{calc(3 * $denom-height)},
+            #{calc(3 * $denom-width)} #{calc(3 * $denom-height)},
+            #{calc(5 * $denom-width)} #{calc(3 * $denom-height)},
+            #{calc(7 * $denom-width)} #{calc(3 * $denom-height)},
 
             // ligne 5
-            0% calc(4 * var(--denom-height)),
-            calc(3 * var(--denom-width)) calc(4 * var(--denom-height)),
-            calc(5 * var(--denom-width)) calc(4 * var(--denom-height)),
-            calc(7 * var(--denom-width)) calc(4 * var(--denom-height)),
+            0% #{calc(4 * $denom-height)},
+            #{calc(3 * $denom-width)} #{calc(4 * $denom-height)},
+            #{calc(5 * $denom-width)} #{calc(4 * $denom-height)},
+            #{calc(7 * $denom-width)} #{calc(4 * $denom-height)},
 
             // ligne 6
-            0% calc(5 * var(--denom-height)),
-            calc(1 * var(--denom-width)) calc(5 * var(--denom-height)),
-            calc(2 * var(--denom-width)) calc(5 * var(--denom-height)),
-            calc(3 * var(--denom-width)) calc(5 * var(--denom-height)),
-            calc(6 * var(--denom-width)) calc(5 * var(--denom-height)),
+            0% #{calc(5 * $denom-height)},
+            #{calc(1 * $denom-width)} #{calc(5 * $denom-height)},
+            #{calc(2 * $denom-width)} #{calc(5 * $denom-height)},
+            #{calc(3 * $denom-width)} #{calc(5 * $denom-height)},
+            #{calc(6 * $denom-width)} #{calc(5 * $denom-height)},
 
             // ligne 7
-            calc(1 * var(--denom-width)) calc(6 * var(--denom-height)),
-            calc(3 * var(--denom-width)) calc(6 * var(--denom-height)),
-            calc(5 * var(--denom-width)) calc(6 * var(--denom-height)),
+            #{calc(1 * $denom-width)} #{calc(6 * $denom-height)},
+            #{calc(3 * $denom-width)} #{calc(6 * $denom-height)},
+            #{calc(5 * $denom-width)} #{calc(6 * $denom-height)},
 
             // ligne 8
-            0% calc(7 * var(--denom-height)),
-            calc(2 * var(--denom-width)) calc(7 * var(--denom-height)),
-            calc(4 * var(--denom-width)) calc(7 * var(--denom-height)),
-            calc(7 * var(--denom-width)) calc(7 * var(--denom-height)),
+            0% #{calc(7 * $denom-height)},
+            #{calc(2 * $denom-width)} #{calc(7 * $denom-height)},
+            #{calc(4 * $denom-width)} #{calc(7 * $denom-height)},
+            #{calc(7 * $denom-width)} #{calc(7 * $denom-height)},
 
             // ligne 9
-            calc(2 * var(--denom-width)) calc(8 * var(--denom-height)),
-            calc(5 * var(--denom-width)) calc(8 * var(--denom-height)),
-            calc(6 * var(--denom-width)) calc(8 * var(--denom-height)),
+            #{calc(2 * $denom-width)} #{calc(8 * $denom-height)},
+            #{calc(5 * $denom-width)} #{calc(8 * $denom-height)},
+            #{calc(6 * $denom-width)} #{calc(8 * $denom-height)},
 
             // ligne 10
-            0% calc(9 * var(--denom-height)),
-            calc(1 * var(--denom-width)) calc(9 * var(--denom-height)),
-            calc(3 * var(--denom-width)) calc(9 * var(--denom-height)),
-            calc(4 * var(--denom-width)) calc(9 * var(--denom-height)),
-            calc(6 * var(--denom-width)) calc(9 * var(--denom-height)),
-            calc(7 * var(--denom-width)) calc(9 * var(--denom-height));
+            0% #{calc(9 * $denom-height)},
+            #{calc(1 * $denom-width)} #{calc(9 * $denom-height)},
+            #{calc(3 * $denom-width)} #{calc(9 * $denom-height)},
+            #{calc(4 * $denom-width)} #{calc(9 * $denom-height)},
+            #{calc(6 * $denom-width)} #{calc(9 * $denom-height)},
+            #{calc(7 * $denom-width)} #{calc(9 * $denom-height)};
     }
 
 }
@@ -169,7 +163,6 @@ header {
         display: block;
         display: flex;
         flex-direction: row;
-
     }
 
     h1 {

@@ -9,7 +9,6 @@ import Swiper from 'swiper';
 import { Autoplay, Navigation } from 'swiper/modules';
 
 
-
 ({ // Agenda Deux par deux
 
 	MONTHS_BACK:   6,
@@ -18,7 +17,6 @@ import { Autoplay, Navigation } from 'swiper/modules';
 	UPCOMINGS:     12,
 	TIMEZONE:      'America/Toronto',
 	DEFAULTPROPS:  { organisation: "ssjb" },
-	RX_GOOGLE_CA:  /^\s*(?:(?<place>(?!\d)[^,]+?),\s*)?(?<street>[^,]+?),\s*(?<city>[^,]+?),\s*(?<province>AB|BC|MB|NB|NL|NS|NT|NU|ON|PE|QC|SK|YT|Québec|Quebec|QC\.?)(?:\s+(?<postal>[A-Z]\d[A-Z][ -]?\d[A-Z]\d))?(?:,\s*(?<country>Canada))?\s*$/iu,
 
 	secrets: null,
 	options: null,
@@ -276,7 +274,8 @@ import { Autoplay, Navigation } from 'swiper/modules';
 
 
 	parseGoogleAddress: function(addr) {
-		const m = addr.match(this.RX_GOOGLE_CA);
+		const rxgoogle = /^\s*(?:(?<place>(?!\d)[^,]+?),\s*)?(?<street>[^,]+?),\s*(?<city>[^,]+?),\s*(?<province>AB|BC|MB|NB|NL|NS|NT|NU|ON|PE|QC|SK|YT|Québec|Quebec|QC\.?)(?:\s+(?<postal>[A-Z]\d[A-Z][ -]?\d[A-Z]\d))?(?:,\s*(?<country>Canada))?\s*$/iu;
+		const m = addr.match(rxgoogle);
 		if (!m) return null;
 		const g = m.groups || {};
 		return {
@@ -348,7 +347,6 @@ import { Autoplay, Navigation } from 'swiper/modules';
 			close.addEventListener('click', e => this.modal.hide());
 			placeholderEvents.append(...eventDetails);
 			// events.map(evt => this.logEvent(evt, type));
-			// console.log(container);
 			this.modal.show(container).then(res);
 		}));
 	},
