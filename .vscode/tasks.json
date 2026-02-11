@@ -3,8 +3,8 @@
 	"tasks": [
 		{
 			"label": "build:watch",
-			"type": "npm",
-			"script": "watch",
+			"type": "shell",
+			"command": "node ./scripts/watch.js",
 			"isBackground": true,
 			"runOptions": {
 				"runOn": "folderOpen",

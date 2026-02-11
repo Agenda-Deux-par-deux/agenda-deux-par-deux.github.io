@@ -414,11 +414,11 @@ import { Autoplay, Navigation } from 'swiper/modules';
 			});
 			res();
 		});
-		window.addEventListener('resize', () => {
+		window.addEventListener('resize', async () => {
 			if (this.mutexSwiper != null) return;
 			const mutexRem = Number(Math.round(rem(2) + 'e+2') + 'e-2');
 			if(mutexRem != this.swiper.params.spaceBetween) {
-				this.mutexSwiper = requestAnimationFrame(() => {
+				this.mutexSwiper = requestAnimationFrame(async () => {
 					this.swiper.params.spaceBetween = mutexRem;
 					this.swiper.update();
 					this.mutexSwiper = null;

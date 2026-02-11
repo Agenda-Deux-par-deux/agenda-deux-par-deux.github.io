@@ -215,43 +215,52 @@ main {
 
 footer {
     position: relative;
-    display: flex;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: auto auto; /* ::before | texte */
+    grid-template-rows: auto auto;
+
+    place-content: center;            /* = align-content + justify-content */
     align-items: center;
+    justify-items: center;
+
+    column-gap: .6rem;                /* espace entre ::before et texte */
+    row-gap: .4rem; 
+
     font-size: 1.3rem;
     font-weight: normal;
     height: 12rem;
     margin-bottom: 2rem;
-    // opacity: 0.4;
     user-select: none;
-
-    // &::before {
-    //     content: '';
-    //     // width: 1.7em;
-    //     height: 2em;
-    //     aspect-ratio: 2/1;
-    //     // background-color: red;
-    //     background-image: var(--logo);
-    //     background-size: contain;
-    //     background-position: left center;
-    //     background-repeat: no-repeat;
-    //     margin-right: 0.5em;
-    //     transition: background-image var(--scheme-transition-duration);
-    // }
 
 
     &::before {
         content: '';
-        // width: 1.7em;
+        grid-column: 1;
+        grid-row: 1;
+
         height: 2em;
         aspect-ratio: 1/1;
-        // background-color: red;
         background-image: url(../images/flf-logo.webp);
         background-size: contain;
         background-position: left center;
         background-repeat: no-repeat;
-        // margin-right: 0.5em;
         transition: background-image var(--scheme-transition-duration);
+        filter: brightness(var(--logo-brightness));
+    }
+
+    &::after {
+        content: '';
+        grid-column: 1 / -1; /* span sur les 2 colonnes */
+        grid-row: 2;
+        justify-self: center;
+        
+        height: 1.2em;
+        aspect-ratio: 1530/331;
+        margin-top: 1rem;
+        background-image: var(--quebec);
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: contain;
         filter: brightness(var(--logo-brightness));
     }
 }
@@ -315,6 +324,41 @@ section {
             li {
                 margin-top: 0.5em;
             }
+        }
+
+
+        .programme {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+            
+
+
+            // background-color: red;
+
+            a {
+                background-color: blue;
+                border-radius: 2.6em;
+                vertical-align: middle;
+                padding: 0.8em 1em;
+
+                text-decoration: none;
+                background-image: none;
+                &::after {
+                    display: none;
+                }
+
+                
+            }
+            a:nth-child(1) {
+                background-color: var(--color-pink);
+            }
+
+            a:nth-child(2) {
+                background-color: var(--color-green);
+            }
+
         }
 
     }
