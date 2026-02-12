@@ -40,13 +40,14 @@ import Notification from "../../scripts/librairies/notification";
 	splashdnd: null,
 
 	loader: null,
+	screenpass: null,
 
 	notif: null,
 
 
 
 	init: async function() {
-		Promise.all([
+		await Promise.all([
 			this.loadSecrets(),
 			documentReady(() => this.initUI())
 		]);
@@ -93,12 +94,15 @@ import Notification from "../../scripts/librairies/notification";
 		this.loader = create('div', 'croper__loader');
 		this.loader.create('div', 'loading-double-circular');
 
+		this.screenpass = create('div', 'screenpass', 'test');
+		
+
 		this.frameL = new ImageFrame(this.imageL, '2/3');
 		this.frameR = new ImageFrame(this.imageR, '5:4');
 
 		this.notif = new Notification;
 
-		this.container.replaceChildren(this.imagegroup, this.btngroup, this.results, this.splash, this.loader);
+		this.container.replaceChildren(this.imagegroup, this.btngroup, this.results, this.splash, this.loader, this.screenpass);
 
 
 	},
