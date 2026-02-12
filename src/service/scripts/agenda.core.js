@@ -6,14 +6,14 @@ import DNDZone from "../../scripts/librairies/dndzone";
 import ImageFrame from "../../scripts/librairies/imageframe";
 import Notification from "../../scripts/librairies/notification";
 
+import FingerprintJS from '@fingerprintjs/fingerprintjs'
+
 
 ({
-
 
 	API_ENDPOINT: 'https://images.action.quebec',
 
 	secrets: null,
-	// options: null,
 
 	container: null,
 	selorg: null,
@@ -38,31 +38,41 @@ import Notification from "../../scripts/librairies/notification";
 	
 	splash: null,
 	splashdnd: null,
-
 	
 	screenpass: null,
+	fingerprint: null,
 	passform: null,
 	passinput: null,
-
+	passtry: 0,
+	
 	loader: null,
 	notif: null,
-
 
 
 	init: async function() {
 		await Promise.all([
 			this.loadSecrets(),
+			this.loadFingerprint(),
 			documentReady(() => this.initUI())
 		]);
+		if(sessionStorage.getItem(this.fingerprint) != md5(`${this.secrets.SERVICE_PWD}:${this.fingerprint}`)) this.screenpass.classList.add('show');
+		this.container.replaceChildren(this.imagegroup, this.btngroup, this.results, this.splash, this.loader, this.screenpass);
+		if(this.screenpass.classList.contains('show')) this.passinput.focus();
 	},
+
 
 	loadSecrets: async function() {
 		this.secrets = await SECRETS;
 	},
 
 
-	initUI: async function() {
+	loadFingerprint: async function() {
+		const fp = await FingerprintJS.load();
+		this.fingerprint = (await fp.get()).visitorId;
+	},
 
+
+	initUI: async function() {
 		this.container = document.querySelector('.croper');
 		this.imagegroup = create('div', 'croper__images');
 		
@@ -97,7 +107,7 @@ import Notification from "../../scripts/librairies/notification";
 		this.loader = create('div', 'croper__loader');
 		this.loader.create('div', 'loading-double-circular');
 
-		this.screenpass = create('div', 'screenpass show');
+		this.screenpass = create('div', 'screenpass');
 		const passcont = this.screenpass.create('div', null, '<div>Entrez votre mot de passe:</div>');
 		this.passform = passcont.create('form');
 		this.passinput = this.passform.create('input', null, null, { name: "password", type: "password", autocomplete: true });
@@ -108,10 +118,6 @@ import Notification from "../../scripts/librairies/notification";
 		this.frameR = new ImageFrame(this.imageR, '5:4');
 
 		this.notif = new Notification;
-
-		this.container.replaceChildren(this.imagegroup, this.btngroup, this.results, this.splash, this.loader, this.screenpass);
-
-
 	},
 
 
@@ -134,7 +140,17 @@ import Notification from "../../scripts/librairies/notification";
 	verifyPassword: function(e) {
 		e.preventDefault();
 		e.stopPropagation();
-		this.screenpass.classList.remove('show');
+		if(md5(this.passinput.value) != this.secrets.SERVICE_PWD) {
+			if(this.passtry >= 2) return document.location.href = 'https://deuxpardeux.quebec/';
+			this.notif.error("Mot de passe invalide");
+			this.passinput.value = "";
+			this.passinput.focus();
+			this.passtry++;
+		} else {
+			sessionStorage.setItem(this.fingerprint, md5(`${this.secrets.SERVICE_PWD}:${this.fingerprint}`));
+			this.notif.thumbsUp('Mot de passe accepté');
+			this.screenpass.classList.remove('show');
+		}
 	},
 
 
@@ -167,6 +183,79 @@ import Notification from "../../scripts/librairies/notification";
 		this.splash.classList.remove('show');
 		this.results.classList.remove('show');
 	},
+
+
+
+	uploadFiles: async function() {
+		return this.busy(new Promise(async (res, rej) => {
+			await new Promise(requestAnimationFrame);
+			this.loader.classList.add('show');
+			try {
+				this.links = await Promise.all([
+					this.uploadBlob(this.exportBlob(640)),
+					this.uploadBlob(this.frameR.exportBlob(140)),
+					this.uploadBlob(this.frameL.exportBlob(280)),
+				]);
+				await sleep(2000);
+				await new Promise(requestAnimationFrame);
+				this.results.classList.add('show');
+				this.loader.classList.remove('show');
+				res();
+			} catch(err) {
+				await sleep(1000);
+				await new Promise(requestAnimationFrame);
+				this.loader.classList.remove('show');
+				this.notif.error("Échec de téléversement");
+				rej();
+			}
+		}));
+	},
+
+
+	exportBlob: async function(outW) {
+		const outH = outW * this.image.naturalHeight / this.image.naturalWidth;
+		const cvs = document.createElement('canvas');
+		cvs.width = outW;
+		cvs.height = outH;
+		const ctx = cvs.getContext('2d', { alpha: true });
+		ctx.imageSmoothingQuality = 'high';
+		ctx.drawImage(this.image, 0, 0, this.image.naturalWidth, this.image.naturalHeight, 0, 0, outW, outH);
+		return new Promise((res, rej) => cvs.toBlob(b => b ? res(b) : rej(new Error('toBlob() a échoué')), `image/webp`, 0.92));
+	},
+
+
+	uploadBlob: async function(blobPromise) {
+		const form = new FormData();
+		form.append('image', new File([await blobPromise], `image.webp`, { type: 'image/webp' }));
+		const options = { headers: {'Authorization': `Bearer ${this.secrets.IMAGE_API_KEY}`}, method: 'POST', body: form };
+		const resp = await fetch(this.API_ENDPOINT, options);
+		const text = (await resp.text()).trim();
+		if (!resp.ok || !/^https?:\/\//i.test(text)) throw new Error(text || 'Téléversement échoué');
+		return text;
+	},
+
+
+	copyLinks() {
+		this.copyLabeledLinks([
+			{ label: `image-couverture`, url: this.links[0] },
+			{ label: `image-calendrier`, url: this.links[1] },
+			{ label: `image-carte`,      url: this.links[2] },
+		]).then(() => this.notif.thumbsUp('Liens copiés!'));
+	},
+
+
+	copyLabeledLinks: function(links, props) {
+		const esc = s => s.replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]));
+		let html = links.map(({ label, url }) => `<a href="${esc(url)}">${esc(label)}</a>`).join('<br>');
+		let text = links.map(({ label, url }) => `${label} — ${url}`).join("\n") + "\n";
+		html += `<p>Plus de détails à venir...</p>`;
+		return navigator.clipboard.write([
+			new ClipboardItem({
+				'text/html': new Blob(['<p>' + html + '</p>'], { type: 'text/html' }),
+				'text/plain': new Blob([text], { type: 'text/plain' })
+			})
+		]);
+	}
 
 	
 }).init();

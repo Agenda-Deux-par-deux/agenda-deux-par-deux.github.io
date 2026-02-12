@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@fingerprintjs/fingerprintjs": "^5.0.1",
     "chokibasic": "^1.0.10",
     "pako": "^2.1.0",
     "swiper": "^12.1.0"

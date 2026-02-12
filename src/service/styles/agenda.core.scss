@@ -212,14 +212,14 @@
 
 		&.show {
 			visibility: visible;
-			opacity: 1;
+			opacity: 0.8;
 			.loading-double-circular {
 				--state: running;
 			}
 		}
 
 		.loading-double-circular {
-			--color: var(--bg-link-alpha);
+			--color: var(--accent);
 			--size: 10rem;
 			--border: 5;
 			--duration: 2.5s;
@@ -227,6 +227,7 @@
 			--state: paused;
 			position: relative;
 			margin: 0;
+			filter: drop-shadow(0 0 0.4rem var(--fg-alpha));
 		}
 	}
 

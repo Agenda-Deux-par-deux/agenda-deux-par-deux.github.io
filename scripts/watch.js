@@ -18,12 +18,12 @@ const { close } = createWatchers(
 		},
 		{
 			name: "js2",
-			patterns: ["src/outil-image/scripts/**/*.js"],
+			patterns: ["src/service/scripts/**/*.js"],
 			ignored: ["**/*.min.js"],
 			callback: async (events) => {
-				console.log("[js] batch", events.length, events.map(e => e.file));
-				const entry = path.resolve(__dirname, "../src/outil-image/scripts/agenda.core.js");
-				const outfile = path.resolve(__dirname, "../src/outil-image/scripts/agenda.core.min.js");
+				console.log("[js2] batch", events.length, events.map(e => e.file));
+				const entry = path.resolve(__dirname, "../src/service/scripts/agenda.core.js");
+				const outfile = path.resolve(__dirname, "../src/service/scripts/agenda.core.min.js");
 				await buildJS(entry, outfile);
 				console.log("");
 			},
@@ -41,11 +41,11 @@ const { close } = createWatchers(
 		},
 		{
 			name: "scss2",
-			patterns: ["src/outil-image/styles/**/*.scss"],
+			patterns: ["src/service/styles/**/*.scss"],
 			callback: async (events) => {
-				console.log("[scss] batch", events.length, events.map(e => e.file));
-				const inputScss = path.resolve(__dirname, "../src/outil-image/styles/agenda.core.scss");
-				const outCssMin = path.resolve(__dirname, "../src/outil-image/styles/agenda.core.min.css");
+				console.log("[scss2] batch", events.length, events.map(e => e.file));
+				const inputScss = path.resolve(__dirname, "../src/service/styles/agenda.core.scss");
+				const outCssMin = path.resolve(__dirname, "../src/service/styles/agenda.core.min.css");
 				await buildCSS(inputScss, outCssMin);
 				console.log("");
 			},
