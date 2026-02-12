@@ -138,6 +138,35 @@ self.preloadImage = url => {
 
 
 /******************************************************
+ *               Copy text to clipboard               *
+ ******************************************************/
+self.copyToClipboard = async text => {
+	if (navigator.clipboard && typeof navigator.clipboard.writeText === "function") {
+		try {
+			await navigator.clipboard.writeText(text);
+			return true;
+		} catch (e) { }
+	}
+	try {
+		const ta = document.createElement("textarea");
+		ta.value = text;
+		ta.style.position = "fixed";
+		ta.style.top = "-9999px";
+		ta.style.left = "-9999px";
+		ta.style.opacity = "0";
+		document.body.appendChild(ta);
+		ta.focus();
+		ta.select();
+		const ok = document.execCommand("copy");
+		document.body.removeChild(ta);
+		return ok;
+	} catch (e) {
+		return false;
+	}
+}
+
+
+/******************************************************
  *                     Date Helpers                   *
  ******************************************************/
 self.pad = (n) => String(n).padStart(2, '0');

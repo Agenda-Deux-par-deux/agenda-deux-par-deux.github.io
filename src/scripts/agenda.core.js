@@ -1,8 +1,10 @@
+import './librairies/secrets';
 import './librairies/helpers';
 import './librairies/lightswitch';
 
 import Modal from './librairies/modal'
 import PXCalendar from './librairies/pxcalendar';
+import Notification from './librairies/notification';
 import SwipeDetector from './librairies/swipedetector';
 import YoutubeReplacer from './librairies/youtubereplacer';
 import Swiper from 'swiper';
@@ -16,11 +18,12 @@ import { Autoplay, Navigation } from 'swiper/modules';
 	TRANSITION:    150,
 	UPCOMINGS:     12,
 	TIMEZONE:      'America/Toronto',
-	DEFAULTPROPS:  { organisation: "ssjb" },
+	DEFAULTPROPS:  { organisation: "deuxpardeux" },
 
 	secrets: null,
 	options: null,
 	events: null,
+	notif: null,
 
 	calendar: null,
 	swipedetector: null,
@@ -42,10 +45,7 @@ import { Autoplay, Navigation } from 'swiper/modules';
 			await Promise.all([
 				documentReady(() => this.initUI()),
 				(new Promise(async resolve => {
-					await loadJsonProperties(this, {
-						secrets: atob('L2J0MW9oOTdqN1guanNvbg=='),
-						options: atob('L29wdGlvbnMuanNvbg=='),
-					});
+					await this.loadSecrets()
 					eventSet = await this.loadGoogleCalendar();
 					resolve();
 				}))
@@ -62,6 +62,7 @@ import { Autoplay, Navigation } from 'swiper/modules';
 
 	initUI: function() {
 		this.modal = new Modal({ onlyBgClick: true });
+		this.notif = new Notification;
 		this.ytreplacer = new YoutubeReplacer({ observer: true });
 		this.calendar = new PXCalendar('.calendar__container', {
 			placeholder: '.calendar__pagination__current',
@@ -79,6 +80,11 @@ import { Autoplay, Navigation } from 'swiper/modules';
 			onSwipeLeft:  () => this.nextMonth(),
 			onSwipeRight: () => this.previousMonth(),
 		});
+	},
+
+
+	loadSecrets: async function() {
+		this.secrets = await SECRETS;
 	},
 
 
@@ -230,9 +236,9 @@ import { Autoplay, Navigation } from 'swiper/modules';
 	},
 
 
-	getOrganisation: function(slug) {
-		return this.options.organisations.find(o => o.slug === slug) ?? this.getOrganisation('ssjb');
-	},
+	// getOrganisation: function(slug) {
+	// 	return this.options.organisations.find(o => o.slug === slug) ?? this.getOrganisation('ssjb');
+	// },
 
 
 	getEventsByDate: function (date) {
@@ -256,7 +262,7 @@ import { Autoplay, Navigation } from 'swiper/modules';
 
 
 	renderEventTip: function(evt) {
-		const org = this.getOrganisation(evt.properties.organisation);
+		// const org = this.getOrganisation(evt.properties.organisation);
 		const time = new Intl.DateTimeFormat('fr-CA', { timeZone: this.IMEZONE, hour: '2-digit', minute: '2-digit', hour12: false }).format(new Date(evt.start));
 		let str = `<h3>${evt.title}</h3>`;
 		if(evt.location) {
@@ -267,8 +273,8 @@ import { Autoplay, Navigation } from 'swiper/modules';
 				str += `<strong>Où:</strong> ${addr}<br>`;
 			}
 		}
-		str += `<strong>Quand:</strong> ${time}<br>`;
-		str += `<strong>Hôte:</strong> ${org.name}`;
+		str += `<strong>Quand:</strong> ${time}`;
+		// str += `<strong>Hôte:</strong> ${org.name}`;
 		return str;
 	},
 
@@ -353,7 +359,7 @@ import { Autoplay, Navigation } from 'swiper/modules';
 
 
 	renderEventDetails: function(evt) {
-		const org = this.getOrganisation(evt.properties.organisation);
+		// const org = this.getOrganisation(evt.properties.organisation);
 		const container = create('div', 'modal-events__placeholder__events__event');
 		const time = this.formatLabel(evt.start);
 		let str = '';
@@ -368,11 +374,23 @@ import { Autoplay, Navigation } from 'swiper/modules';
 			str += `<span class="label"><strong>Où:</strong> <a href="${url}" target="_blank" noopener noreferer>${addr}</a></span><br>`;
 		}
 		str += `<span class="label"><strong>Quand:</strong> <a href="${evt.link}" target="_blank" noopener noreferer>${time}</a></span><br>`;
-		str += `<span class="label"><strong>Hôte:</strong> <a href="${org.url}" target="_blank" noopener noreferer>${org.name}</a></span><br><br>`;
-		str += evt.description;// + `<br>EventID: ${evt.id}`;
+		// str += `<span class="label"><strong>Hôte:</strong> <a href="${org.url}" target="_blank" noopener noreferer>${org.name}</a></span><br>`;
+		str += `<span class="share" title="Partager l'événement" >Partager</span><br>`;
+
+		str += `<br>${evt.description}`;// + `<br>EventID: ${evt.id}`;
 		container.innerHTML = str;
+		container.querySelector('.share').addEventListener('click', () => this.copyLink(evt.id));
 		if(!evt.image) return container; // bizarre ça
 		return new Promise(res => preloadImage(evt.image).then(() => res(container)));
+	},
+
+
+	copyLink: async function(id) {
+		if(await copyToClipboard(`https://partage.deuxpardeux.quebec/${id}/`)) {
+			this.notif.thumbsUp('Lien copié!');
+		} else {
+			this.notif.error('Erreur de presse papier.');
+		}
 	},
 
 

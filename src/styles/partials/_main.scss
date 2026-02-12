@@ -240,7 +240,7 @@ footer {
 
         height: 2em;
         aspect-ratio: 1/1;
-        background-image: url(../images/flf-logo.webp);
+        background-image: var(--flf-logo);
         background-size: contain;
         background-position: left center;
         background-repeat: no-repeat;
@@ -338,7 +338,7 @@ section {
             // background-color: red;
 
             a {
-                background-color: blue;
+                // background-color: blue;
                 border-radius: 2.6em;
                 vertical-align: middle;
                 padding: 0.8em 1em;
@@ -348,8 +348,14 @@ section {
                 &::after {
                     display: none;
                 }
+                transition:
+                    color var(--scheme-transition-duration),
+                    background-color var(--scheme-transition-duration),
+                    transform 100ms;
 
-                
+                &:hover {
+                    transform: scale(1.05);
+                }
             }
             a:nth-child(1) {
                 background-color: var(--color-pink);
