@@ -39,9 +39,12 @@ import Notification from "../../scripts/librairies/notification";
 	splash: null,
 	splashdnd: null,
 
-	loader: null,
+	
 	screenpass: null,
+	passform: null,
+	passinput: null,
 
+	loader: null,
 	notif: null,
 
 
@@ -94,8 +97,12 @@ import Notification from "../../scripts/librairies/notification";
 		this.loader = create('div', 'croper__loader');
 		this.loader.create('div', 'loading-double-circular');
 
-		this.screenpass = create('div', 'screenpass', 'test');
-		
+		this.screenpass = create('div', 'screenpass show');
+		const passcont = this.screenpass.create('div', null, '<div>Entrez votre mot de passe:</div>');
+		this.passform = passcont.create('form');
+		this.passinput = this.passform.create('input', null, null, { name: "password", type: "password", autocomplete: true });
+		this.passform.create('input', null, null, { type: "submit", value: "Soumettre"});
+		this.passform.addEventListener('submit', e => this.verifyPassword(e));
 
 		this.frameL = new ImageFrame(this.imageL, '2/3');
 		this.frameR = new ImageFrame(this.imageR, '5:4');
@@ -123,6 +130,12 @@ import Notification from "../../scripts/librairies/notification";
 		return typeof promise == 'array' ? results : results[0];
 	},
 
+
+	verifyPassword: function(e) {
+		e.preventDefault();
+		e.stopPropagation();
+		this.screenpass.classList.remove('show');
+	},
 
 
 	handleFile: function(dropFile) {

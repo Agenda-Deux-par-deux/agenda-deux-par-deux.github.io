@@ -44,7 +44,8 @@ jobs:
           {
             "GOOGLE_API_KEY": "${{ secrets.GOOGLE_API_KEY }}",
             "CALENDAR_ID": "${{ secrets.CALENDAR_ID }}",
-            "IMAGE_API_KEY": "${{ secrets.IMAGE_API_KEY }}"
+            "IMAGE_API_KEY": "${{ secrets.IMAGE_API_KEY }}",
+            "SERVICE_PWD": "${{ secrets.SERVICE_PWD }}"
           }
           JSON
           B64="$(base64 -w 0 /tmp/bt1oh97j7X.json)"
