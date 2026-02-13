@@ -5,4 +5,5 @@
 Thumbs.db
 /src/quebec.svg
 /dist/service/
-/scripts/deploy-service.json
+/scripts/deploy-service-i.json
+/scripts/deploy-service-p.json
