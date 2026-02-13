@@ -188,7 +188,6 @@ import FingerprintJS from '@fingerprintjs/fingerprintjs';
 	},
 
 
-
 	uploadFiles: async function() {
 		return this.busy(new Promise(async (res, rej) => {
 			await new Promise(requestAnimationFrame);
@@ -198,6 +197,7 @@ import FingerprintJS from '@fingerprintjs/fingerprintjs';
 					this.uploadBlob(this.exportBlob(640)),
 					this.uploadBlob(this.frameR.exportBlob(140)),
 					this.uploadBlob(this.frameL.exportBlob(280)),
+					this.uploadBlob(this.exportBlob(1200, 630)),
 				]);
 				await sleep(2000);
 				await new Promise(requestAnimationFrame);
@@ -215,15 +215,34 @@ import FingerprintJS from '@fingerprintjs/fingerprintjs';
 	},
 
 
-	exportBlob: async function(outW) {
-		const outH = outW * this.image.naturalHeight / this.image.naturalWidth;
+	exportBlob: async function (outW, outH) {
+		const srcW = this.image.naturalWidth;
+		const srcH = this.image.naturalHeight;
+
+		if (!outH) outH = Math.round(outW * srcH / srcW);
+
 		const cvs = document.createElement('canvas');
 		cvs.width = outW;
 		cvs.height = outH;
+
 		const ctx = cvs.getContext('2d', { alpha: true });
+		ctx.imageSmoothingEnabled = true;
 		ctx.imageSmoothingQuality = 'high';
-		ctx.drawImage(this.image, 0, 0, this.image.naturalWidth, this.image.naturalHeight, 0, 0, outW, outH);
-		return new Promise((res, rej) => cvs.toBlob(b => b ? res(b) : rej(new Error('toBlob() a échoué')), `image/webp`, 0.92));
+
+		const targetAR = outW / outH;
+		const srcAR = srcW / srcH;
+		let sx = 0, sy = 0, sWidth = srcW, sHeight = srcH;
+
+		if (srcAR > targetAR) {
+			sWidth = Math.round(srcH * targetAR);
+			sx = Math.round((srcW - sWidth) / 2);
+		} else if (srcAR < targetAR) {
+			sHeight = Math.round(srcW / targetAR);
+			sy = Math.round((srcH - sHeight) / 2);
+		}
+
+		ctx.drawImage(this.image, sx, sy, sWidth, sHeight, 0, 0, outW, outH);
+		return new Promise((res, rej) => cvs.toBlob(b => b ? res(b) : rej(new Error('toBlob() a échoué')), 'image/webp', 0.92));
 	},
 
 
@@ -243,6 +262,7 @@ import FingerprintJS from '@fingerprintjs/fingerprintjs';
 			{ label: `image-couverture`, url: this.links[0] },
 			{ label: `image-calendrier`, url: this.links[1] },
 			{ label: `image-carte`,      url: this.links[2] },
+			{ label: `image-scraper`,    url: this.links[3] },
 		]).then(() => this.notif.thumbsUp('Liens copiés!'));
 	},
 
