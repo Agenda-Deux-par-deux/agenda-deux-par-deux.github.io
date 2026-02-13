@@ -1,4 +1,3 @@
-// deploySftp.cjs
 const fs = require("fs");
 const path = require("path");
 const SftpClient = require("ssh2-sftp-client");
@@ -10,10 +9,12 @@ const SftpClient = require("ssh2-sftp-client");
  *    password? OR privateKeyPath?, passphrase?,
  *    remoteRoot: "/var/www/site"
  *  }
- * @param {{local:string, remote:string}[]} items
- *  Ex: { local: "dist", remote: "." }  -> contenu de dist vers remoteRoot/
- *      { local: "dist", remote: "dist" } -> dist/* vers remoteRoot/dist/*
- *      { local: "robots.txt", remote: "robots.txt" }
+ *
+ * @param {Array<string | {local:string, remote?:string}>} items
+ *  - string: "dist" => local="dist", remote="dist"
+ *  - object: { local:"dist", remote:"." } => dist/* vers remoteRoot/*
+ *  - object sans remote: { local:"assets" } => remote="assets"
+ *
  * @param {{dryRun?:boolean, overwrite?:boolean}} [opts]
  */
 async function deploySftp(cfg, items, opts = {}) {
@@ -24,7 +25,7 @@ async function deploySftp(cfg, items, opts = {}) {
     throw new Error("Config invalide: host/username/remoteRoot requis.");
   }
   if (!Array.isArray(items)) {
-    throw new Error("items doit être un array de { local, remote }.");
+    throw new Error("items doit être un array.");
   }
 
   const sftp = new SftpClient();
@@ -47,11 +48,7 @@ async function deploySftp(cfg, items, opts = {}) {
     parts.filter(Boolean).join("/").replace(/\\/g, "/").replace(/\/+/g, "/");
 
   function statSafe(p) {
-    try {
-      return fs.statSync(p);
-    } catch {
-      return null;
-    }
+    try { return fs.statSync(p); } catch { return null; }
   }
 
   async function ensureRemoteDir(remoteDir) {
@@ -116,39 +113,57 @@ async function deploySftp(cfg, items, opts = {}) {
     }
   }
 
+  // Normalisation : accepte "string" ou {local, remote?}
+  function normalizeItem(it) {
+    if (typeof it === "string") {
+      const local = it;
+      return { local, remote: local };
+    }
+    if (it && typeof it === "object") {
+      const local = it.local;
+      if (!local) return null;
+
+      // ✅ la règle demandée:
+      // si remote absent => même que local
+      const remote =
+        (it.remote === undefined || it.remote === null || it.remote === "")
+          ? local
+          : it.remote;
+
+      return { local, remote };
+    }
+    return null;
+  }
+
+  const normalized = items.map(normalizeItem).filter(Boolean);
+
   console.log(`SFTP deploy => ${cfg.host}:${connectOptions.port} (dry=${dryRun}, overwrite=${overwrite})`);
 
   await sftp.connect(connectOptions);
   try {
-    for (const it of items) {
-      const local = it?.local;
-      const remote = it?.remote;
-
-      if (!local || remote === undefined || remote === null) {
-        console.warn("skip (invalid item)", it);
-        continue;
-      }
-
-      const localAbs = path.resolve(local);
+    for (const it of normalized) {
+      const localAbs = path.resolve(it.local);
       const st = statSafe(localAbs);
+
       if (!st) {
-        console.warn(`skip (missing) ${local}`);
+        console.warn(`skip (missing) ${it.local}`);
         continue;
       }
 
-      // remote est relatif à remoteRoot
-      // convention: remote="." => sync le contenu du dossier local vers remoteRoot (ou vers remoteRoot + ".")
-      const remoteAbs = posixJoin(cfg.remoteRoot, toPosix(remote));
-      const targetRemoteDir = (toPosix(remote) === ".") ? cfg.remoteRoot : remoteAbs;
+      const remoteRel = toPosix(it.remote);
+      const remoteAbs = posixJoin(cfg.remoteRoot, remoteRel);
+
+      // convention: remote="." => contenu du dossier local vers remoteRoot
+      const targetRemoteDir = (remoteRel === ".") ? cfg.remoteRoot : remoteAbs;
 
       if (st.isDirectory()) {
-        console.log(`dir  ${local} -> ${targetRemoteDir}`);
+        console.log(`dir  ${it.local} -> ${targetRemoteDir}`);
         await putDir(localAbs, targetRemoteDir);
       } else if (st.isFile()) {
-        console.log(`file ${local} -> ${remoteAbs}`);
+        console.log(`file ${it.local} -> ${remoteAbs}`);
         await putFile(localAbs, remoteAbs);
       } else {
-        console.warn(`skip (not file/dir) ${local}`);
+        console.warn(`skip (not file/dir) ${it.local}`);
       }
     }
   } finally {

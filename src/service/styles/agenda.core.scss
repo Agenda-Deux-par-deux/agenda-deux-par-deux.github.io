@@ -195,8 +195,13 @@
 		visibility: hidden;
 		align-items: center;
 		justify-content: center;
-		transition-property: visibility opacity;
-		transition-duration: 150ms;
+		transition:
+			visibility 150ms,
+			opacity 150ms;
+
+
+		// transition-property: visibility opacity;
+		// transition-duration: 150ms;
 		opacity: 0;
 
 		&::before {
@@ -357,5 +362,67 @@
 		}
 
 	}
+
+}
+
+
+
+
+
+
+
+body::before {
+	$aspect-width: 8;
+	$aspect-height: 5;
+	$fade-lines: 4;
+
+	$offset-width: calc(100% / $aspect-width);
+	$offset-height: calc(100% / $aspect-height);
+	$denom-width: calc($offset-width / (100% - $offset-width) * 100%);
+	$denom-height: calc($offset-height / (100% - $offset-height) * 100%);
+	$mask-fade: calc(100% - ($denom-height * $fade-lines));
+	--mask: linear-gradient(to bottom, black 0, black #{$mask-fade}, transparent 100%);
+
+	content: '';
+	aspect-ratio: #{$aspect-width}/#{$aspect-height};
+	background-size: #{$offset-width} #{$offset-height};
+	background-image:
+		var(--circle-1), var(--circle-2), var(--circle-1),
+		var(--circle-1), var(--circle-2), var(--circle-1), var(--circle-2), var(--circle-2),
+		var(--circle-1), var(--circle-2), var(--circle-2), var(--circle-1),
+		var(--circle-2), var(--circle-1), var(--circle-1), var(--circle-1), var(--circle-1),
+		var(--circle-1), var(--circle-2), var(--circle-2), var(--circle-1);
+		
+	background-position:
+		// ligne 1 
+		0% 0%,
+		#{calc(1 * $denom-width)} 0%,
+		#{calc(6 * $denom-width)} 0%,
+		
+		// ligne 2
+		0% #{calc(1 * $denom-height)},
+		#{calc(2 * $denom-width)} #{calc(1 * $denom-height)},
+		#{calc(4 * $denom-width)} #{calc(1 * $denom-height)},
+		#{calc(6 * $denom-width)} #{calc(1 * $denom-height)},
+		#{calc(7 * $denom-width)} #{calc(1 * $denom-height)},
+
+		// ligne 3
+		#{calc(1 * $denom-width)} #{calc(2 * $denom-height)},
+		#{calc(2 * $denom-width)} #{calc(2 * $denom-height)},
+		#{calc(5 * $denom-width)} #{calc(2 * $denom-height)},
+		#{calc(6 * $denom-width)} #{calc(2 * $denom-height)},
+
+		// ligne 4
+		0% #{calc(3 * $denom-height)},
+		#{calc(1 * $denom-width)} #{calc(3 * $denom-height)},
+		#{calc(3 * $denom-width)} #{calc(3 * $denom-height)},
+		#{calc(5 * $denom-width)} #{calc(3 * $denom-height)},
+		#{calc(7 * $denom-width)} #{calc(3 * $denom-height)},
+
+		// ligne 5
+		0% #{calc(4 * $denom-height)},
+		#{calc(3 * $denom-width)} #{calc(4 * $denom-height)},
+		#{calc(5 * $denom-width)} #{calc(4 * $denom-height)},
+		#{calc(7 * $denom-width)} #{calc(4 * $denom-height)};
 
 }

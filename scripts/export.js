@@ -1,6 +1,7 @@
 const path = require('path');
 const fs = require('fs/promises');
 const { exportDist } = require("chokibasic");
+// const { exportDist } = require("../../chokibasic");
 
 
 const DIR = process.cwd();

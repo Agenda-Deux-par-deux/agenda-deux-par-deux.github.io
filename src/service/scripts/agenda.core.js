@@ -15,6 +15,7 @@ import FingerprintJS from '@fingerprintjs/fingerprintjs';
 
 	secrets: null,
 
+	parent: null,
 	container: null,
 	selorg: null,
 	seltype: null,
@@ -57,6 +58,7 @@ import FingerprintJS from '@fingerprintjs/fingerprintjs';
 		]);
 		if(sessionStorage.getItem(this.fingerprint) != md5(`${this.secrets.SERVICE_PWD}:${this.fingerprint}`)) this.screenpass.classList.add('show');
 		this.container.replaceChildren(this.imagegroup, this.btngroup, this.results, this.splash, this.loader, this.screenpass);
+		this.parent.replaceWith(this.container);
 		if(this.screenpass.classList.contains('show')) this.passinput.focus();
 	},
 
@@ -73,7 +75,8 @@ import FingerprintJS from '@fingerprintjs/fingerprintjs';
 
 
 	initUI: async function() {
-		this.container = document.querySelector('.croper');
+		this.parent = document.querySelector('service-image');
+		this.container = create('div', 'croper');
 		this.imagegroup = create('div', 'croper__images');
 		
 		this.image = create('img');

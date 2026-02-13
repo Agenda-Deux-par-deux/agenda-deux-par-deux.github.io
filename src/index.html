@@ -10,15 +10,13 @@
     <meta property="og:description" content="Action.quebec est un calendrier collectif qui regroupe les activités indépendantistes au Québec.">
     <meta property="og:url" content="https://action.quebec/">
     <meta property="og:image" content="https://action.quebec/images/ogimage.webp"> -->
-    <script src="./scripts/agenda.core.min.js"></script>
-    <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-5J9PDKQG2J"></script> -->
     <link rel="icon" type="image/x-icon" href="./favicon.ico">
-    <link rel="stylesheet" href="./styles/agenda.core.min.css">
-
+    <link rel="stylesheet" href="./styles/agenda.core.min.css?###TIMESTAMP###">
+    <script src="./scripts/agenda.core.min.js?###TIMESTAMP###"></script>
     <title>Agenda Deux par deux</title>
 </head>
 <body>
-    <script type="application/ld+json">
+    <!-- <script type="application/ld+json">
     {
         "@context": "https://schema.org",
         "@type": "WebSite",
@@ -26,7 +24,7 @@
         "name": "action.quebec | calendrier indépendantiste",
         "description": "Calendrier collectif des événements indépendantistes au Québec."
     }
-    </script>
+    </script> -->
     <header>
         <a href="/">
             <h1 title="Agenda deux par deux">
@@ -45,7 +43,6 @@
                     <div class="calendar__pagination__current"></div>
                     <div class="calendar__pagination__next" title="suivant"><span>suivant</span></div>
                 </div>
-                <!-- <div class="calendar__types"></div> -->
                 <div class="calendar__container"></div>
             </div>
         </section>
@@ -72,26 +69,6 @@
                 </div>
             </div>
         </section>
-        <!-- <section>
-            <div>
-                <h2>Comment ajouter votre événement?</h2>
-                <h3>Deux façons simples :</h3>
-                <ul>
-                    <li>Via Google Calendar : créez un événement et invitez <a href="mailto:info@action.quebec">info@action.quebec</a> comme participant.</li>
-                    <li>Par courriel : envoyez les détails (titre, date, lieu, description) à <a href="mailto:info@action.quebec">info@action.quebec</a> et nous l’ajouterons pour vous.</li>
-                </ul>
-            </div>
-        </section> -->
-        <!-- <section>
-            <div>
-                <h2>Pourquoi participer aux événements?</h2>
-                <ul>
-                    <li>🔎 Donnez vie à votre jumelage, hors écran.</li>
-                    <li>🗣️ Pratiquez le français dans un contexte réel et relax.</li>
-                    <li>🤝 Créez des liens durables avec la communauté.</li>
-                </ul>
-            </div>
-        </section> -->
         <section>
             <div>
                 <h2>Restez informés</h2>
@@ -102,12 +79,5 @@
     <footer title="Tous droits réservés © Fondation pour la langue française, ###YEAR###">
         © Tous droits réservés<br>Fondation pour la langue française, ###YEAR###
     </footer>
-    <!-- <script>
-        document.addEventListener('DOMContentLoaded', e => Quebec.unPays());
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
-        gtag('config', 'G-5J9PDKQG2J');
-    </script> -->
 </body>
 </html>
