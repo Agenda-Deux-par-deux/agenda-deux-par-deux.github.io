@@ -19,7 +19,6 @@ https.get(url, res => {
     fs.mkdirSync(path.dirname(dest), { recursive: true });
     fs.writeFileSync(dest, buf); // <-- pas d'encoding
     console.log(`✅ Fichier téléchargé (binaire) dans ${dest} — ${buf.length} bytes`);
-    fs.mkdirSync(path.dirname(serv), { recursive: true });
   });
 }).on("error", err => {
   console.error("❌ Erreur:", err.message);

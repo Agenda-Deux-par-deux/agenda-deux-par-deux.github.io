@@ -6,12 +6,12 @@ import DNDZone from "../../scripts/librairies/dndzone";
 import ImageFrame from "../../scripts/librairies/imageframe";
 import Notification from "../../scripts/librairies/notification";
 
-import FingerprintJS from '@fingerprintjs/fingerprintjs'
+import FingerprintJS from '@fingerprintjs/fingerprintjs';
 
 
 ({
 
-	API_ENDPOINT: `${location.protocol}//images.deuxpardeux.quebec`,
+	API_ENDPOINT: `https://images.deuxpardeux.quebec`,
 
 	secrets: null,
 
