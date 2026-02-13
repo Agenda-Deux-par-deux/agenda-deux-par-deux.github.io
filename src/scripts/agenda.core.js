@@ -53,7 +53,7 @@ import { Autoplay, Navigation } from 'swiper/modules';
 			await Promise.all([
 				this.calendar.addEvents(eventSet),
 				this.addUpcomingEvents(),
-				// this.initParams()
+				this.initParams()
 			]);
 			resolve();
 		})).then(() => this.processPayload());
@@ -85,6 +85,20 @@ import { Autoplay, Navigation } from 'swiper/modules';
 
 	loadSecrets: async function() {
 		this.secrets = await SECRETS;
+	},
+
+
+	initParams: async function() {
+		const evtId = (new URLSearchParams(window.location.search))?.get('id');
+		if(evtId) {
+			const event = this.getEventById(evtId);
+			if(event) {
+				await this.calendar.setMonth(ymd(new Date(event.start)));
+				await this.clickEventDay(event.id, 'onload');
+			} else {
+				this.notif.error("Événement introuvable");
+			}
+		}
 	},
 
 
