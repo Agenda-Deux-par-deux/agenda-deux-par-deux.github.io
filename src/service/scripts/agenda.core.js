@@ -11,7 +11,7 @@ import FingerprintJS from '@fingerprintjs/fingerprintjs'
 
 ({
 
-	API_ENDPOINT: 'https://images.action.quebec',
+	API_ENDPOINT: `${location.protocol}//images.deuxpardeux.quebec`,
 
 	secrets: null,
 
