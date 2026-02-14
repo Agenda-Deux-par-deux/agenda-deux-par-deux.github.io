@@ -2,7 +2,7 @@ const fs = require("fs");
 const https = require("https");
 const path = require("path");
 
-const url = "https://agenda-deux-par-deux.github.io/bt1oh97j7X.bin";
+const url = "https://agenda.deuxpardeux.quebec/bt1oh97j7X.bin";
 const dest = path.resolve(__dirname, "../src/bt1oh97j7X.bin");
 
 https.get(url, res => {
