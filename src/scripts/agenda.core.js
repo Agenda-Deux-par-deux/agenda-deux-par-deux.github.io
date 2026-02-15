@@ -21,7 +21,6 @@ import { Autoplay, Navigation } from 'swiper/modules';
 	DEFAULTPROPS:  { organisation: "deuxpardeux" },
 
 	secrets: null,
-	options: null,
 	events: null,
 	notif: null,
 
@@ -45,7 +44,7 @@ import { Autoplay, Navigation } from 'swiper/modules';
 			await Promise.all([
 				documentReady(() => this.initUI()),
 				(new Promise(async resolve => {
-					await this.loadSecrets()
+					await this.loadSecrets();
 					eventSet = await this.loadGoogleCalendar();
 					resolve();
 				}))

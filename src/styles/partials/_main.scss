@@ -37,6 +37,7 @@ body {
     min-height: 100dvh;
 
     transition:
+        background-image var(--scheme-transition-duration),
         background-color var(--scheme-transition-duration),
         color var(--scheme-transition-duration);
 
