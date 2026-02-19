@@ -1,6 +1,6 @@
-# action.quebec
-Calendrier indépendantiste Québécois \
-https://action.quebec
+# agenda.deuxpardeux.quebec
+L'agenda de nos événements \
+https://agenda.deuxpardeux.quebec
 
 
 ## Installation
@@ -13,7 +13,6 @@ code .
 ```
 
 ## Extensions VS Code recommandées
-- [File Watcher](https://marketplace.visualstudio.com/items?itemName=appulate.filewatcher) (Déclancher la compilation des fichiers JS et SCSS)
 - [Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer) (Serveur web intégré)
 
 
